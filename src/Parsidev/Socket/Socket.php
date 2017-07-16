@@ -22,7 +22,7 @@ class Socket
 
     public function connect()
     {
-        if (!socket_connect($this->socket, $this->config('address'), $this->config('port'))) {
+        if (!socket_connect($this->socket, $this->config('address'), intval($this->config('port')))) {
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
             $this->isConnected = false;
