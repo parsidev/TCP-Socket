@@ -15,7 +15,7 @@ class SocketServiceProvider extends ServiceProvider {
     }
 
     public function register() {
-        $this->app->singleton(function($app) {
+        $this->app->singleton('tcpsocket', function($app) {
             $config = config('tcp-socket');
             return new Socket($config);
         });
