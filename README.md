@@ -24,7 +24,7 @@ Next, add a Facade for more convenient usage. In ```config/app.php``` add the fo
 ```
 Publish config files:
 ```
-php artisan vendor:publish
+php artisan vendor:publish --provider="Parsidev\Socket\SocketServiceProvider"
 ```
 for change username, password and other configuration change ```config/tcp-socket.php```
 
