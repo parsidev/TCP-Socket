@@ -10,13 +10,13 @@ class SocketServiceProvider extends ServiceProvider {
 
     public function boot() {
         $this->publishes([
-            __DIR__ . '/../../config/tcp-socket.php' => config_path('tcp-socket.php'),
+            __DIR__ . '/../../config/tcpsocket.php' => config_path('tcpsocket.php'),
         ]);
     }
 
     public function register() {
         $this->app->singleton('tcpsocket', function($app) {
-            $config = config('tcp-socket');
+            $config = config('tcpsocket');
             return new Socket($config);
         });
     }
