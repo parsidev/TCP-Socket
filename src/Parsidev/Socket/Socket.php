@@ -5,14 +5,18 @@ namespace Parsidev\Socket;
 class Socket
 {
 
-    protected $config;
+    protected $ip;
+    protected $port;
+    protected $protocol;
     protected $socket;
     protected $isConnected = false;
 
-    public function __construct($config)
+    public function __construct($ip, $port, $protocol)
     {
-        $this->config = $config;
-        if (!($this->socket = socket_create(AF_INET, SOCK_STREAM, $this->config('protocol')))) {
+        $this->ip = $ip;
+        $this->port = $port;
+        $this->protocol = $protocol;
+        if (!($this->socket = socket_create(AF_INET, SOCK_STREAM, $protocol))) {
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
             $this->isConnected = false;
@@ -22,7 +26,7 @@ class Socket
 
     public function connect()
     {
-        if (!socket_connect($this->socket, $this->config('address'), intval($this->config('port')))) {
+        if (!socket_connect($this->socket, $this->ip, intval($this->port))) {
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
             $this->isConnected = false;
