@@ -3,5 +3,5 @@
 return [
     'address' => '*.*.*.*',
     'port' => "****",
-    'protocol' => SOL_SOCKET
+    'protocol' => SOL_TCP
 ];
