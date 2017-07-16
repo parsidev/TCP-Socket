@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class SocketServiceProvider extends ServiceProvider {
 
-    protected $defer = false;
+    protected $defer = true;
 
     public function boot() {
         $this->publishes([
