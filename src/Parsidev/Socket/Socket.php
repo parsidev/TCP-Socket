@@ -33,6 +33,8 @@ class Socket
             throw new \Exception($errormsg, $errorcode);
         } else {
             $this->isConnected = true;
+            socket_getsockname($this->socket, $IP, $PORT);
+            return ['IP' => $IP, "PORT" => $PORT];
         }
     }
 
