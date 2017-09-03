@@ -41,11 +41,13 @@ class Socket
     public function receiveFrom($ip, $port, $len = 500000, $flag = 0)
     {
         $result = null;
-        while (true) {
-            socket_recvfrom($this->socket, $buf, $len, $flag, $ip, intval($port));
-            if (!is_null($buf)) {
-                $result = $buf;
-                break;
+        if($this->isConnected){
+            while (true) {
+                socket_recvfrom($this->socket, $buf, $len, $flag, $ip, intval($port));
+                if (!is_null($buf)) {
+                    $result = $buf;
+                    break;
+                }
             }
         }
         return $result;
