@@ -38,12 +38,12 @@ class Socket
         }
     }
 
-    public function receiveFrom($ip, $port, $len = 500000, $flag = 0)
+    public function receiveMessage($len = 500000, $flag = 0)
     {
         $result = null;
         if ($this->isConnected) {
             while (is_null($result)) {
-                socket_recvfrom($this->socket, $buf, $len, $flag, $ip, intval($port));
+                socket_recvfrom($this->socket, $buf, $len, $flag, $this->ip, intval($this->port));
                 if (!is_null($buf))
                     $result = $buf;
             }
