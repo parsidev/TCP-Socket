@@ -38,6 +38,20 @@ class Socket
         }
     }
 
+    public function receiveFrom($ip, $port, $len = 500000, $flag = 0)
+    {
+        $result = null;
+        while (true) {
+            socket_recvfrom($this->socket, $buf, $len, $flag, $ip, intval($port));
+            if (!is_null($buf)) {
+                $result = $buf;
+                break;
+            }
+        }
+        return $result;
+    }
+
+
     public function disconnect()
     {
         socket_close($this->socket);
@@ -45,7 +59,7 @@ class Socket
 
     public function readMessage($length = 2048, $type = PHP_BINARY_READ)
     {
-        return socket_read($this->socket, $length);
+        return socket_read($this->socket, $length, $type);
     }
 
     public function sendMessage($message)
