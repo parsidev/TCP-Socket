@@ -38,20 +38,6 @@ class Socket
         }
     }
 
-    public function receiveMessage($len = 500000, $flag = 0)
-    {
-        $result = null;
-        if ($this->isConnected) {
-            socket_bind($this->socket,$this->ip, intval($this->port));
-            while (is_null($result)) {
-                socket_recvfrom($this->socket, $buf, $len, $flag, $this->ip, intval($this->port));
-                if (!is_null($buf))
-                    $result = $buf;
-            }
-        }
-        return $result;
-    }
-
 
     public function disconnect()
     {
