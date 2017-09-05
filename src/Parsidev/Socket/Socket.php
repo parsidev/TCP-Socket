@@ -10,6 +10,8 @@ class Socket
     protected $protocol;
     protected $socket;
     protected $isConnected = false;
+    protected $myIp;
+    protected $myPort;
 
     public function __construct($ip, $port, $protocol)
     {
@@ -34,6 +36,8 @@ class Socket
         } else {
             $this->isConnected = true;
             socket_getsockname($this->socket, $IP, $PORT);
+            $this->myIp=$IP;
+            $this->myPort = $PORT;
             return ['IP' => $IP, "PORT" => $PORT];
         }
     }
@@ -52,6 +56,16 @@ class Socket
 
         return $result;
     }
+
+    public function receiveMessage(){
+        $result = null;
+
+        if(is_null($result))
+            $result = $this->sendMessage("pp@".$this->myIp. "-" . $this->myPort . "\r\n");
+
+        return $result;
+    }
+
 
     public function sendMessage($message)
     {
