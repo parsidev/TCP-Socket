@@ -46,7 +46,11 @@ class Socket
 
     public function readMessage($length = 2048, $type = PHP_BINARY_READ)
     {
-        return socket_read($this->socket, $length, $type);
+        $result = socket_read($this->socket, $length, $type);
+        if (is_null($result))
+            $this->readMessage($length, $type);
+
+        return $result;
     }
 
     public function sendMessage($message)
