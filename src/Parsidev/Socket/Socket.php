@@ -59,9 +59,11 @@ class Socket
 
     public function receiveMessage(){
         $result = null;
+        $message = "pp@".$this->myIp. "-" . $this->myPort . "\r\n"
+        $result = $this->sendMessage($message);
 
         if(is_null($result))
-            $result = $this->sendMessage("pp@".$this->myIp. "-" . $this->myPort . "\r\n");
+            $result = $this->sendMessage($message);
 
         return $result;
     }
