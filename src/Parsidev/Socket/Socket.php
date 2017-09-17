@@ -2,6 +2,8 @@
 
 namespace Parsidev\Socket;
 
+use RuntimeException;
+
 class Socket
 {
 
@@ -22,7 +24,7 @@ class Socket
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
             $this->isConnected = false;
-            throw new \Exception($errormsg, $errorcode);
+            throw new RuntimeException($errormsg, $errorcode);
         }
     }
 
@@ -32,7 +34,7 @@ class Socket
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
             $this->isConnected = false;
-            throw new \Exception($errormsg, $errorcode);
+            throw new RuntimeException($errormsg, $errorcode);
         } else {
             $this->isConnected = true;
             socket_getsockname($this->socket, $IP, $PORT);
@@ -59,11 +61,10 @@ class Socket
 
     public function receiveMessage(){
         $result = null;
-        $message = "pp@".$this->myIp. "-" . $this->myPort . "\r\n"
-        $result = $this->sendMessage($message);
+        $result = $this->sendMessage("pp@".$this->myIp. "-" . $this->myPort . "\r\n");
 
         if(is_null($result))
-            $result = $this->sendMessage($message);
+            $result = $this->sendMessage("pp@".$this->myIp. "-" . $this->myPort . "\r\n");
 
         return $result;
     }
@@ -76,7 +77,7 @@ class Socket
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
             $this->isConnected = false;
-            throw new \Exception($errormsg, $errorcode);
+            throw new RuntimeException($errormsg, $errorcode);
         }
         return $result;
     }
@@ -88,7 +89,7 @@ class Socket
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
             $this->isConnected = false;
-            throw new \Exception($errormsg, $errorcode);
+            throw new RuntimeException($errormsg, $errorcode);
         }
         return $result;
     }
