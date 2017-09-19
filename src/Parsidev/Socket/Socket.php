@@ -72,8 +72,6 @@ class Socket
 
     public function sendMessage($message)
     {
-
-        $message = "$message\n\0";
         $length = strlen($message);
 
         while(true) {
