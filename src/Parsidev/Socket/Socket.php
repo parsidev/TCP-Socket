@@ -55,27 +55,6 @@ class Socket
         socket_close($this->socket);
     }
 
-    public function readMessage($length = 2048, $type = PHP_BINARY_READ)
-    {
-        $result = socket_read($this->socket, $length, $type);
-        if (is_null($result))
-            $this->readMessage($length, $type);
-
-        return $result;
-    }
-
-    public function receiveMessage()
-    {
-        $result = null;
-        $result = $this->sendMessage("pp@" . $this->myIp . "-" . $this->myPort . "\r\n");
-
-        if (is_null($result))
-            $result = $this->sendMessage("pp@" . $this->myIp . "-" . $this->myPort . "\r\n");
-
-        return $result;
-    }
-
-
     public function sendMessage($message)
     {
         $length = strlen($message);
