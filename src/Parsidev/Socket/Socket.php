@@ -38,9 +38,14 @@ class Socket
         } else {
             $this->isConnected = true;
             socket_getsockname($this->socket, $IP, $PORT);
-            $this->myIp=$IP;
+            $this->myIp = $IP;
             $this->myPort = $PORT;
-            return ['IP' => $IP, "PORT" => $PORT];
+
+            $result = new \stdClass();
+            $result->ip = $IP;
+            $result->port = $PORT;
+            
+            return $result;
         }
     }
 
@@ -59,12 +64,13 @@ class Socket
         return $result;
     }
 
-    public function receiveMessage(){
+    public function receiveMessage()
+    {
         $result = null;
-        $result = $this->sendMessage("pp@".$this->myIp. "-" . $this->myPort . "\r\n");
+        $result = $this->sendMessage("pp@" . $this->myIp . "-" . $this->myPort . "\r\n");
 
-        if(is_null($result))
-            $result = $this->sendMessage("pp@".$this->myIp. "-" . $this->myPort . "\r\n");
+        if (is_null($result))
+            $result = $this->sendMessage("pp@" . $this->myIp . "-" . $this->myPort . "\r\n");
 
         return $result;
     }
@@ -74,15 +80,15 @@ class Socket
     {
         $length = strlen($message);
 
-        while(true) {
-            $sent = socket_write($this->socket,$message,$length);
-            if($sent === false) {
+        while (true) {
+            $sent = socket_write($this->socket, $message, $length);
+            if ($sent === false) {
                 $errorCode = socket_last_error();
                 $errorMessage = socket_strerror($errorCode);
                 $this->isConnected = false;
                 throw new RuntimeException($errorMessage, $errorCode);
             }
-            if($sent < $length) {
+            if ($sent < $length) {
                 $message = substr($message, $sent);
                 $length -= $sent;
                 print("Message truncated: Resending: $message");
