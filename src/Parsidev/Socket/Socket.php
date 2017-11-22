@@ -2,6 +2,7 @@
 
 namespace Parsidev\Socket;
 
+use App\Models\DeviceMessage;
 use RuntimeException;
 
 class Socket
@@ -88,5 +89,13 @@ class Socket
             throw new RuntimeException($errormsg, $errorcode);
         }
         return $result;
+    }
+
+    public function readMessage($sendIp, $senderPort){
+        $msg = DeviceMessage::where('senderIp',$sendIp)->where('senderPort',$senderPort)->first();
+        while(is_null($msg)){
+            $msg = DeviceMessage::where('senderIp',$sendIp)->where('senderPort',$senderPort)->first();
+        }
+        return $msg->data;
     }
 }
