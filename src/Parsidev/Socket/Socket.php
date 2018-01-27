@@ -29,8 +29,15 @@ class Socket
         }
     }
 
-    public function connect()
+    public function connect($ip = null, $port = null)
     {
+        if (!is_null($ip))
+            $this->ip = $ip;
+
+        if (!is_null($port))
+            $this->port = $port;
+
+
         if (!socket_connect($this->socket, $this->ip, intval($this->port))) {
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
@@ -45,7 +52,7 @@ class Socket
             $result = new \stdClass();
             $result->ip = $IP;
             $result->port = $PORT;
-            
+
             return $result;
         }
     }
