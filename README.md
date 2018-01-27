@@ -41,6 +41,10 @@ You can change server protocol between ```SOL_TCP``` and ```SOL_UDP```
 ### Connect To Server
 ```php
 Socket::connect();
+
+Socket::connect($ip);
+Socket::connect(null, $port);
+Socket::connect($ip, $port);
 ```
 
 ### Disconnect from Server
