@@ -52,15 +52,16 @@ class Socket
             $result = new \stdClass();
             $result->ip = $IP;
             $result->port = $PORT;
+            $result->socket = $this->socket;
 
             return $result;
         }
     }
 
 
-    public function disconnect()
+    public function disconnect($socket)
     {
-        socket_close($this->socket);
+        socket_close($socket);
     }
 
     public function sendMessage($message)
