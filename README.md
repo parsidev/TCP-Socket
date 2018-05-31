@@ -26,7 +26,7 @@ Publish config files:
 ```
 php artisan vendor:publish --provider="Parsidev\Socket\SocketServiceProvider"
 ```
-for change username, password and other configuration change ```config/tcp-socket.php```
+for change username, password and other configuration change ```config/tcpsocket.php```
 
 Usage
 -----
@@ -40,16 +40,16 @@ You can change server protocol between ```SOL_TCP``` and ```SOL_UDP```
 
 ### Connect To Server
 ```php
-Socket::connect();
+$socket = Socket::connect();
 
-Socket::connect($ip);
-Socket::connect(null, $port);
-Socket::connect($ip, $port);
+$socket = Socket::connect($ip);
+$socket = Socket::connect(null, $port);
+$socket = Socket::connect($ip, $port);
 ```
 
 ### Disconnect from Server
 ```php
-Socket::disconnect();
+Socket::disconnect($socket);
 ```
 
 ### Send Message
@@ -58,16 +58,3 @@ Socket::sendMessage('test message'); //send message to connected server
 Socket::sendMessageTo('test message', 'server ip', server port) // send message to a socket
 
 ```
-
-### Read Message
-```php
-$response = Socket::readMessage(); //Read message with 2048 byte buffer
-
-Or
-
-$response = Socket::readMessage($length)//Read message with custom byte buffer;
-
-$response = Socket::readMessage($length,$type)//Read message with custom byte buffer and custom type(PHP_NORMAL_READ or PHP_BINARY_READ);
-
-
-``` 
