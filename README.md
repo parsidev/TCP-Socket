@@ -31,7 +31,7 @@ for change username, password and other configuration change ```config/tcpsocket
 Usage
 -----
 
-###Configuration
+### Configuration
 Open ```config/tcp-socket.php```<br/>
 <br />
 Enter Server Ip Address and Port
