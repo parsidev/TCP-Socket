@@ -8,10 +8,10 @@ use RuntimeException;
 class Socket
 {
 
-    protected $ip;
-    protected $port;
-    protected $protocol;
-    protected $socket;
+    protected $ip = null;
+    protected $port = null;
+    protected $protocol = null;
+    protected $socket = null;
     protected $isConnected = false;
     protected $myIp;
     protected $myPort;
@@ -61,8 +61,12 @@ class Socket
 
     public function disconnect($socket)
     {
-        socket_shutdown($this->socket, 2);
+        socket_shutdown($socket, 2);
         socket_close($socket);
+        $this->ip = null;
+        $this->port = null;
+        $this->protocol = null;
+        $this->socket = null;
     }
 
     public function sendMessage($message)
