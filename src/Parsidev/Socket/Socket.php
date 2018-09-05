@@ -61,6 +61,7 @@ class Socket
 
     public function disconnect($socket)
     {
+        socket_shutdown($this->socket, 2);
         socket_close($socket);
     }
 
