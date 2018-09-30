@@ -7,7 +7,7 @@ For install this package Edit your project's ```composer.json``` file to require
 
 ```php
 "require": {
-    "parsidev/tcp-socket": "dev-master"
+    "parsidev/tcp-socket": "5.7.x-dev"
 },
 ```
 Now, update Composer:
