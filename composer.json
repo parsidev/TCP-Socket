@@ -17,5 +17,15 @@
             "Parsidev\\Socket": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Parsidev\\Socket\\SocketServiceProvider"
+            ],
+            "aliases": {
+                "Socket": "Parsidev\\Socket\\Facades"
+            }
+        }
+},
     "minimum-stability": "stable"
 }
