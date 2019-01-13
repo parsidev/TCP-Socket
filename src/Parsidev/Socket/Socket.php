@@ -72,24 +72,18 @@ class Socket
     public function sendMessage($message)
     {
         $length = strlen($message);
-
-        while (true) {
-            $sent = socket_write($this->socket, $message, $length);
-            if ($sent === false) {
-                $errorCode = socket_last_error();
-                $errorMessage = socket_strerror($errorCode);
-                $this->isConnected = false;
-                throw new RuntimeException($errorMessage, $errorCode);
-            }
-            if ($sent < $length) {
-                $message = substr($message, $sent);
-                $length -= $sent;
-                print("Message truncated: Resending: $message");
-            } else {
-                return true;
-            }
+        $sent = socket_write($this->socket, $message, $length);
+        if (!$sent) {
+            $errorCode = socket_last_error();
+            $errorMessage = socket_strerror($errorCode);
+            throw new RuntimeException($errorMessage, $errorCode);
         }
-        return false;
+        $out = '';
+        while($out = @socket_read($this->socket, 1024)) {
+            if($out = trim($out))
+                break;
+        }
+        return $out;
     }
 
     public function sendMessageTo($message, $ip, $port)
@@ -98,9 +92,13 @@ class Socket
         if (!$result) {
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
-            $this->isConnected = false;
             throw new RuntimeException($errormsg, $errorcode);
         }
-        return $result;
+        $out = '';
+        while($out = @socket_read($this->socket, 1024)) {
+            if($out = trim($out))
+                break;
+        }
+        return $out;
     }
 }
