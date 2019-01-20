@@ -21,21 +21,26 @@ class Socket
         $this->ip = $ip;
         $this->port = $port;
         $this->protocol = $protocol;
-        if (!($this->socket = socket_create(AF_INET, SOCK_STREAM, $protocol))) {
-            $errorcode = socket_last_error();
-            $errormsg = socket_strerror($errorcode);
-            $this->isConnected = false;
-            throw new RuntimeException($errormsg, $errorcode);
-        }
     }
 
-    public function connect($ip = null, $port = null)
+    public function connect($ip = null, $port = null, $protocol = null)
     {
         if (!is_null($ip))
             $this->ip = $ip;
 
         if (!is_null($port))
             $this->port = $port;
+        
+        if(!is_null($protocol)
+           $this->protocol = $protocol;
+           
+           
+        if (!($this->socket = socket_create(AF_INET, SOCK_STREAM, $this->protocol))) {
+            $errorcode = socket_last_error();
+            $errormsg = socket_strerror($errorcode);
+            $this->isConnected = false;
+            throw new RuntimeException($errormsg, $errorcode);
+        }
 
 
         if (!socket_connect($this->socket, $this->ip, intval($this->port))) {
