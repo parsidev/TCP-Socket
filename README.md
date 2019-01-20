@@ -45,6 +45,7 @@ $socket = Socket::connect();
 $socket = Socket::connect($ip);
 $socket = Socket::connect(null, $port);
 $socket = Socket::connect($ip, $port);
+$socket = Socket::connect($ip, $protocol); // protocol is ```SOL_TCP``` or ```SOL_UDP```
 ```
 
 ### Disconnect from Server
@@ -54,7 +55,8 @@ Socket::disconnect($socket);
 
 ### Send Message
 ```php
-Socket::sendMessage('test message'); //send message to connected server
-Socket::sendMessageTo('test message', 'server ip', server port) // send message to a socket
+$response = Socket::sendMessage('test message'); //send message to connected server
+$response = Socket::sendMessageTo('test message', 'server ip', server port) // send message to a socket
 
+echo $response; //show received data from server
 ```
