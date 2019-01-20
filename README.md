@@ -45,7 +45,7 @@ $socket = Socket::connect();
 $socket = Socket::connect($ip);
 $socket = Socket::connect(null, $port);
 $socket = Socket::connect($ip, $port);
-$socket = Socket::connect($ip, $protocol); // protocol is ```SOL_TCP``` or ```SOL_UDP```
+$socket = Socket::connect($ip, $protocol); // protocol is SOL_TCP or SOL_UDP
 ```
 
 ### Disconnect from Server
