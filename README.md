@@ -54,8 +54,6 @@ Socket::disconnect($socket);
 
 ### Send Message
 ```php
-$response = Socket::sendMessage('test message'); //send message to connected server
-$response = Socket::sendMessageTo('test message', 'server ip', server port) // send message to a socket
-
-echo $response; //echo response from server
+Socket::sendMessage('test message'); //send message to connected server
+Socket::sendMessageTo('test message', 'server ip', server port) // send message to a socket
 ```
