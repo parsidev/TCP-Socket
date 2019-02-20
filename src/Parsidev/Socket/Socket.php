@@ -31,7 +31,7 @@ class Socket
         if (!is_null($port))
             $this->port = $port;
         
-        if(!is_null($protocol)
+        if(!is_null($protocol))
            $this->protocol = $protocol;
            
            
@@ -71,36 +71,35 @@ class Socket
         $this->ip = null;
         $this->port = null;
         $this->protocol = null;
-        $this->socket = null;
     }
 
-    public function sendMessage($message)
+    public function sendMessage($socket, $message)
     {
         $length = strlen($message);
-        $sent = socket_write($this->socket, $message, $length);
+        $sent = socket_write($socket, $message, $length);
         if (!$sent) {
             $errorCode = socket_last_error();
             $errorMessage = socket_strerror($errorCode);
             throw new RuntimeException($errorMessage, $errorCode);
         }
         $out = '';
-        while($out = @socket_read($this->socket, 1024)) {
+        while($out = @socket_read($socket, 1024)) {
             if($out = trim($out))
                 break;
         }
         return $out;
     }
 
-    public function sendMessageTo($message, $ip, $port)
+    public function sendMessageTo($socket, $message, $ip, $port)
     {
-        $result = socket_sendto($this->socket, $message, strlen($message), 0, $ip, $port);
+        $result = socket_sendto($socket, $message, strlen($message), 0, $ip, $port);
         if (!$result) {
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
             throw new RuntimeException($errormsg, $errorcode);
         }
         $out = '';
-        while($out = @socket_read($this->socket, 1024)) {
+        while($out = @socket_read($socket, 1024)) {
             if($out = trim($out))
                 break;
         }
