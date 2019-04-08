@@ -66,7 +66,7 @@ class Socket
 
     public function disconnect($socket)
     {
-        socket_shutdown($socket, 2);
+        //socket_shutdown($socket, 2);
         socket_close($socket);
         $this->ip = null;
         $this->port = null;
