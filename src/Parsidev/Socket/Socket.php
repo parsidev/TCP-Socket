@@ -23,18 +23,18 @@ class Socket
         $this->protocol = $protocol;
     }
 
-    public function connect($ip = null, $port = null, $protocol = null)
+    public function connect($ip = null, $port = null, $protocol = null, $timeout = null)
     {
         if (!is_null($ip))
             $this->ip = $ip;
 
         if (!is_null($port))
             $this->port = $port;
-        
-        if(!is_null($protocol))
-           $this->protocol = $protocol;
-           
-           
+
+        if (!is_null($protocol))
+            $this->protocol = $protocol;
+
+
         if (!($this->socket = socket_create(AF_INET, SOCK_STREAM, $this->protocol))) {
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
@@ -51,12 +51,18 @@ class Socket
         } else {
             $this->isConnected = true;
             socket_getsockname($this->socket, $IP, $PORT);
-            
+
+            if ($timeout != null) {
+                $timeout = intval($timeout);
+                $option = ['sec' => $timeout, 'usec' => $timeout * 1000];
+                socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, $timeout);
+                socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, $timeout);
+            }
             $snd = socket_get_option($this->socket, SOL_SOCKET, SO_SNDTIMEO);
             info(json_encode($snd));
             $snd = socket_get_option($this->socket, SOL_SOCKET, SO_RCVTIMEO);
             info(json_encode($snd));
-            
+
             $this->myIp = $IP;
             $this->myPort = $PORT;
 
