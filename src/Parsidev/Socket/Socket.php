@@ -55,8 +55,8 @@ class Socket
             if ($timeout != null) {
                 $timeout = intval($timeout);
                 $option = ['sec' => $timeout, 'usec' => $timeout * 1000];
-                socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, $timeout);
-                socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, $timeout);
+                socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, $option);
+                socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, $option);
             }
             $snd = socket_get_option($this->socket, SOL_SOCKET, SO_SNDTIMEO);
             info(json_encode($snd));
