@@ -51,6 +51,17 @@ class Socket
         } else {
             $this->isConnected = true;
             socket_getsockname($this->socket, $IP, $PORT);
+            
+            $snd = socket_get_option($this->socket, SOL_SOCKET, SO_SNDTIMEO);
+            info(json_encode($snd));
+            $snd = socket_get_option($this->socket, SOL_TCP, SO_SNDTIMEO);
+            info(json_encode($snd));
+
+            $snd = socket_get_option($this->socket, SOL_SOCKET, SO_RCVTIMEO);
+            info(json_encode($snd));
+            $snd = socket_get_option($this->socket, SOL_TCP, SO_RCVTIMEO);
+            info(json_encode($snd));
+            
             $this->myIp = $IP;
             $this->myPort = $PORT;
 
@@ -62,7 +73,6 @@ class Socket
             return $result;
         }
     }
-
 
     public function disconnect($socket)
     {
