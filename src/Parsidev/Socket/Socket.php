@@ -54,12 +54,7 @@ class Socket
             
             $snd = socket_get_option($this->socket, SOL_SOCKET, SO_SNDTIMEO);
             info(json_encode($snd));
-            $snd = socket_get_option($this->socket, SOL_TCP, SO_SNDTIMEO);
-            info(json_encode($snd));
-
             $snd = socket_get_option($this->socket, SOL_SOCKET, SO_RCVTIMEO);
-            info(json_encode($snd));
-            $snd = socket_get_option($this->socket, SOL_TCP, SO_RCVTIMEO);
             info(json_encode($snd));
             
             $this->myIp = $IP;
