@@ -90,7 +90,7 @@ class Socket
             throw new RuntimeException($errorMessage, $errorCode);
         }
         $out = '';
-        while($out = @socket_read($socket, 1024)) {
+        while($out = @socket_read($socket, 5120)) {
             if($out = trim($out))
                 break;
         }
@@ -106,7 +106,7 @@ class Socket
             throw new RuntimeException($errormsg, $errorcode);
         }
         $out = '';
-        while($out = @socket_read($socket, 1024)) {
+        while($out = @socket_read($socket, 5120)) {
             if($out = trim($out))
                 break;
         }
