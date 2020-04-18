@@ -21,26 +21,21 @@ class Socket
         $this->ip = $ip;
         $this->port = $port;
         $this->protocol = $protocol;
+        if (!($this->socket = socket_create(AF_INET, SOCK_STREAM, $protocol))) {
+            $errorcode = socket_last_error();
+            $errormsg = socket_strerror($errorcode);
+            $this->isConnected = false;
+            throw new RuntimeException($errormsg, $errorcode);
+        }
     }
 
-    public function connect($ip = null, $port = null, $protocol = null, $timeout = null)
+    public function connect($ip = null, $port = null)
     {
         if (!is_null($ip))
             $this->ip = $ip;
 
         if (!is_null($port))
             $this->port = $port;
-
-        if (!is_null($protocol))
-            $this->protocol = $protocol;
-
-
-        if (!($this->socket = socket_create(AF_INET, SOCK_STREAM, $this->protocol))) {
-            $errorcode = socket_last_error();
-            $errormsg = socket_strerror($errorcode);
-            $this->isConnected = false;
-            throw new RuntimeException($errormsg, $errorcode);
-        }
 
 
         if (!socket_connect($this->socket, $this->ip, intval($this->port))) {
@@ -51,14 +46,6 @@ class Socket
         } else {
             $this->isConnected = true;
             socket_getsockname($this->socket, $IP, $PORT);
-
-            if ($timeout != null) {
-                $timeout = intval($timeout);
-                $option = ['sec' => $timeout, 'usec' => $timeout * 1000];
-                socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, $option);
-                socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, $option);
-            }
-
             $this->myIp = $IP;
             $this->myPort = $PORT;
 
@@ -71,45 +58,49 @@ class Socket
         }
     }
 
+
     public function disconnect($socket)
     {
-        //socket_shutdown($socket, 2);
+        socket_shutdown($socket, 2);
         socket_close($socket);
         $this->ip = null;
         $this->port = null;
         $this->protocol = null;
+        $this->socket = null;
     }
 
-    public function sendMessage($socket, $message)
+    public function sendMessage($message)
     {
         $length = strlen($message);
-        $sent = socket_write($socket, $message, $length);
-        if (!$sent) {
-            $errorCode = socket_last_error();
-            $errorMessage = socket_strerror($errorCode);
-            throw new RuntimeException($errorMessage, $errorCode);
+
+        while (true) {
+            $sent = socket_write($this->socket, $message, $length);
+            if ($sent === false) {
+                $errorCode = socket_last_error();
+                $errorMessage = socket_strerror($errorCode);
+                $this->isConnected = false;
+                throw new RuntimeException($errorMessage, $errorCode);
+            }
+            if ($sent < $length) {
+                $message = substr($message, $sent);
+                $length -= $sent;
+                print("Message truncated: Resending: $message");
+            } else {
+                return true;
+            }
         }
-        $out = '';
-        while($out = @socket_read($socket, 5120)) {
-            if($out = trim($out))
-                break;
-        }
-        return $out;
+        return false;
     }
 
-    public function sendMessageTo($socket, $message, $ip, $port)
+    public function sendMessageTo($message, $ip, $port)
     {
-        $result = socket_sendto($socket, $message, strlen($message), 0, $ip, $port);
+        $result = socket_sendto($this->socket, $message, strlen($message), 0, $ip, $port);
         if (!$result) {
             $errorcode = socket_last_error();
             $errormsg = socket_strerror($errorcode);
+            $this->isConnected = false;
             throw new RuntimeException($errormsg, $errorcode);
         }
-        $out = '';
-        while($out = @socket_read($socket, 5120)) {
-            if($out = trim($out))
-                break;
-        }
-        return $out;
+        return $result;
     }
 }
