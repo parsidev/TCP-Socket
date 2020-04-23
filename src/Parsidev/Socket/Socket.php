@@ -94,7 +94,7 @@ class Socket
             if($out = trim($out))
                 break;
         }
-        return $out;
+        return $out != false? $out : "No Data!";
     }
 
     public function sendMessageTo($socket, $message, $ip, $port)
